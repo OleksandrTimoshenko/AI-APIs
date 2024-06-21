@@ -9,10 +9,10 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 if len(sys.argv) != 2:
-        print("Usage: script.py <assistant_id>, or")
-        assistant_id = input("Enter your assistant_id: ")
-
-#assistant_id = "asst_IiCr3clRy9vw70giDTJ2a90s"
+    print("Usage: script.py <assistant_id>, or")
+    assistant_id = input("Enter your assistant_id: ")
+else:
+    assistant_id = sys.argv[1]
 
 client = OpenAI()
 
@@ -23,7 +23,7 @@ thread = client.beta.threads.create()
 message = client.beta.threads.messages.create(
   thread_id=thread.id,
   role="user",
-  content="Please explain my how I can debug Zermatt environment"
+  content=os.getenv("THREAD_QUESTION")
 )
 
 print("thread ID: " + thread.id)
@@ -32,7 +32,7 @@ print("thread ID: " + thread.id)
 run = client.beta.threads.runs.create_and_poll(
   thread_id=thread.id,
   assistant_id=assistant_id,
-  instructions="Please address the user as Dear Astounder. The user has a premium account."
+  instructions=os.getenv("RUN_INSTRUCTION")
 )
 
 if run.status == 'completed': 
