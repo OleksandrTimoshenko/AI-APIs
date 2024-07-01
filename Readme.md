@@ -10,5 +10,6 @@
 9. Create  `trainingData` folder and add files with context to this folder. [Supported files](https://platform.openai.com/docs/assistants/tools/file-search/supported-files)
 10. Install `python3` and `openai` library.
 11. Create your assistant using `python ./asistants/create_assistant_with_context.py` This will return `assistant ID`
-12. Ask question to assistant using `python ./asistants/create_new_thread_with_existing_assistant.py "assistant ID"`
+12. Create new thread (if requiered) `python ./asistants/create_thread.py`
+12. Ask question to assistant using `python ./asistants/create_new_thread_with_existing_assistant.py <assistant ID> <thread_ID>`
 13. You can list your existing assistants using `python ./asistants/list.py`
