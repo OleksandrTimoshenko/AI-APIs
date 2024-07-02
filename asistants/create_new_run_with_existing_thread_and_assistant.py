@@ -4,7 +4,6 @@ from openai import AssistantEventHandler
 import os
 from dotenv import load_dotenv
 import sys
-#import tiktoken
 import re
 
 load_dotenv()
@@ -32,10 +31,6 @@ class EventHandler(AssistantEventHandler):
             print(f"\n{output.logs}", flush=True)
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-
-#def count_tokens(text, model="gpt-3.5-turbo"):
-#    encoding = tiktoken.encoding_for_model(model)
-#    return len(encoding.encode(text))
 
 if len(sys.argv) != 3:
     print("Usage: script.py <assistant_id> <thread_id>, or")

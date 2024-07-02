@@ -1,9 +1,8 @@
 from openai import OpenAI
 import os
+import sys
 from dotenv import load_dotenv
 import datetime
-#import tiktoken
-#from PyPDF2 import PdfReader
 
 load_dotenv()
 
@@ -19,49 +18,16 @@ def get_all_files(folder):
             files.append(file_path)
     return files
 
-"""
-def count_tokens(text, model="gpt-3.5-turbo"):
-    encoding = tiktoken.encoding_for_model(model)
-    return len(encoding.encode(text))
-    
-def extract_text_from_pdf(pdf_path):
-    text = ""
-    try:
-        reader = PdfReader(pdf_path)
-        for page in reader.pages:
-            text += page.extract_text() + "\n"
-    except Exception as e:
-        print(f"Error reading PDF file {pdf_path}: {e}")
-    return text
-"""
-
 if __name__ == "__main__":
+  if len(sys.argv) != 2:
+        print("Usage: script.py <assistant_id>, or")
+        assistant_id = input("Enter your assistant_id: ")
+  else:
+        assistant_id = sys.argv[1]
 
   client = OpenAI()
 
-  #assistant_creation_tokens = count_tokens(os.getenv("ASSISTANT_INSTRUCTION"), model=os.getenv("ASSISTANT_MODEL")) + 1  # +1 for the model name
-  #print(f"Estimated tokens for assistant creation: {assistant_creation_tokens}")
-
-  total_training_tokens = 0
   file_paths = get_all_files("./trainingData")
-  """
-  for path in file_paths:
-    # TODO: add different files pypes here
-    if path.endswith(".pdf"):
-      text = extract_text_from_pdf(path)
-      total_training_tokens += count_tokens(text, model=os.getenv("ASSISTANT_MODEL"))
-  
-  print(f"Estimated tokens for training: {total_training_tokens}")
-  """
-
-
-  # Step 1: Create a new Assistant with File Search Enabled
-  assistant = client.beta.assistants.create(
-    name=PROJECT_NAME + " AI assistant",
-    instructions=os.getenv("ASSISTANT_INSTRUCTION"),
-    model=os.getenv("ASSISTANT_MODEL"),
-    tools=[{"type": "file_search"}],
-  )
 
   ### You can do Steps 2 and 3 every time when files changed
 
@@ -79,9 +45,8 @@ if __name__ == "__main__":
   print(vector_store.id)
 
   # Step 3: Update the assistant to to use the new Vector Store
-  # TODO: investigate fow we can add only changed files to model (if it`s possible)
   assistant = client.beta.assistants.update(
-    assistant_id=assistant.id,
+    assistant_id=assistant_id,
     tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
   )
 
