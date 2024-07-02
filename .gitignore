@@ -1,4 +1,6 @@
 legacy/
 .env
-trainingData/
+.env.*
+!.env.example
+trainingData*
 costs.txt
