@@ -10,12 +10,13 @@ PROJECT_NAME =  os.getenv("PROJECT_NAME")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 def get_all_files(folder):
-    # Get a list of all files in the specified folder
+    # Get a list of all files in the specified folder and its subfolders
     files = []
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        if os.path.isfile(file_path):
-            files.append(file_path)
+    for root, _, filenames in os.walk(folder):
+        for filename in filenames:
+            file_path = os.path.join(root, filename)
+            if os.path.isfile(file_path):
+                files.append(file_path)
     return files
 
 if __name__ == "__main__":
