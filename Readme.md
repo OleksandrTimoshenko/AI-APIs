@@ -14,7 +14,22 @@
 1. Update info in `./AI_integrations/jira/.env.example` and `cp ./AI_integrations/jira/.env.example ./AI_integrations/jira/.env`
 2. run `python ./AI_integrations/jira/get_tickets_from_jira.py`
 
+### Project structure
+```
+├── AI_integrations
+├── Gemini
+├── OpenAI
+├── Readme.md
+└── trainingData
+    └── jira
+        ├── jira_SPACE-XXXX.json
+        ...
+    └── confluence
+        ├── confluence-SPACE-docx-name.json
+        ...
+```
 ## TODO:
-1. create data flow diagram
-2. add requirements.txt to both Readme files
-3. create instruction for assistant for work with Jira JSON format
+1. confluecne integration
+2. create data flow diagram
+3. add requirements.txt to both Readme files
+4. create instruction for assistant for work with Jira JSON format

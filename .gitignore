@@ -4,3 +4,4 @@ legacy/
 !.env.example
 trainingData*
 costs.txt
+__pycache__
