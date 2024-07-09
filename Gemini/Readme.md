@@ -8,8 +8,8 @@
 4. Update the .env.example file and then run `cp .env.example .env`.
 
 ## Usage
-`python ./gemini/work_with_files.py` - Start a new prompt with a file.  
-`python ./delete_all_downloaded_files.py` - Delete all downloaded files.  
+`python ./Gemini/work_with_files.py` - Start a new prompt with a file.  
+`python ./Gemini/delete_all_downloaded_files.py` - Delete all downloaded files.  
 
 ## Files
 The File API lets you store up to 20GB of files per project, with each file not exceeding 2GB in size. Files are stored for 48 hours and can be accessed with your API key for generation within that time period. It is available at no cost in all regions where the Gemini API is available.

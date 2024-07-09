@@ -14,11 +14,13 @@
 ### Setup code
 1. Create a `trainingData` folder and add files with context to this folder. [Supported files](https://platform.openai.com/docs/assistants/tools/file-search/supported-files).
 2. Install `python3` and the `openai` library.
-3. Create your assistant using `python ./assistants/create_assistant_with_context.py`. This will return an `assistant ID`.
-4. Add (or update) your context using `python ./assistants/update_context.py <assistant ID>`.
-5. Create a new thread (if required) using `python ./assistants/create_thread.py`.
-6. Ask a question to the assistant using `python ./assistants/create_new_thread_with_existing_assistant.py <assistant ID> <thread_ID>`.
-7. You can list your existing assistants using `python ./assistants/list.py`.
+3. Create your assistant using `python ./OpenAI/assistants/create_assistant.py`. This will return an `assistant ID` and `Vector store ID` assigned to assistant.
+4. Add (or update) assistant content using `python ./OpenAI/assistants/update_content.py <Vector store ID>`.
+#### Legacy
+1. Add (or update) your context using `python ./OpenAI/assistants_legacy/update_context.py <assistant ID>`.
+2. Create a new thread (if required) using `python ./OpenAI//assistants_legacy/create_thread.py`.
+3. Ask a question to the assistant using `python ./OpenAI//assistants_legacy/create_new_thread_with_existing_assistant.py <assistant ID> <thread_ID>`.
+4. You can list your existing assistants using `python ./OpenAI//assistants_legacy/list.py`.
 
 ### Add integrations
 #### Slack
