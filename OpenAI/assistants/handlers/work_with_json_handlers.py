@@ -145,3 +145,90 @@ def add_vector_store_file_to_json(vector_store_id, filename, new_file_id, json_f
     # Save the updated JSON data back to the file
     with open(json_file, 'w') as file:
         json.dump(data, file, indent=4)
+
+def delete_assistant_from_json(assistant_id, json_file):
+
+    # Load JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    # Filter out the assistant with the given assistant_id
+    data["assistants"] = [
+        assistant for assistant in data["assistants"]
+        if assistant["assigned_assistant_id"] != assistant_id
+    ]
+    
+    # Save the updated JSON data back to the file
+    with open(json_file, 'w') as file:
+        json.dump(data, file, indent=4)
+
+def get_all_vector_store_ids(json_file):
+    # Load JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    vector_store_ids = []
+    
+    # Iterate through assistants and their vector stores to collect vector store IDs
+    for assistant in data["assistants"]:
+        for vector_store in assistant.get("vector_stores", []):
+            vector_store_ids.append(vector_store["vector_store_id"])
+    
+    return vector_store_ids
+
+def get_vector_stores_by_assistant(assistant_id, json_file):
+    # Load JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    # Iterate through assistants to find the matching assistant_id
+    for assistant in data["assistants"]:
+        if assistant["assigned_assistant_id"] == assistant_id:
+            return assistant.get("vector_stores", [])
+    
+    return []  # Return an empty list if the assistant_id is not found
+
+def is_vector_store_used_by_other_assistants(vector_store_id, current_assistant_id, json_file):
+    # Load JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    using_assistants = []
+    
+    # Iterate through assistants and their vector stores to check usage
+    for assistant in data["assistants"]:
+        if assistant["assigned_assistant_id"] == current_assistant_id:
+            continue  # Skip the current assistant
+        for vector_store in assistant.get("vector_stores", []):
+            if vector_store["vector_store_id"] == vector_store_id:
+                using_assistants.append(assistant["assigned_assistant_name"])
+    
+    # Print the list of assistants that use the vector store
+    if using_assistants:
+        print(f"Vector store '{vector_store_id}' is used by the following assistants (excluding current assistant): {using_assistants}")
+        return True
+    else:
+        print(f"Vector store '{vector_store_id}' is not used by any other assistants.")
+        return False
+
+def is_file_id_used_in_vector_stores(file_id, json_file):
+    # Load JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    using_vector_stores = []
+    
+    # Iterate through assistants and their vector stores to check file usage
+    for assistant in data["assistants"]:
+        for vector_store in assistant.get("vector_stores", []):
+            for file in vector_store.get("files", []):
+                if file["vector_store_file_id"] == file_id:
+                    using_vector_stores.append(vector_store["vector_store_name"])
+    
+    # Print the names of vector stores that use the file
+    if using_vector_stores:
+        print(f"File ID '{file_id}' is used by the following vector stores: {using_vector_stores}")
+        return True
+    else:
+        print(f"File ID '{file_id}' is not used by any vector stores.")
+        return False
