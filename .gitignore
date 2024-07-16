@@ -3,6 +3,6 @@ legacy/
 .env.*
 !.env.example
 trainingData*
-assistants.json
+assistants*.json
 costs.txt
 __pycache__

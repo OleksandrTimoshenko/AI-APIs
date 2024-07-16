@@ -33,8 +33,7 @@
         ...
 ```
 ## TODO:
-1. confluecne integration
-2. create data flow diagram
-3. add requirements.txt to both Readme files
-4. create instruction for assistant for work with Jira JSON format
-5. update Jira parser for removing unnecessary fields
+1. create data flow diagram
+2. add requirements.txt to all project parts
+3. create instruction for assistant for work with Jira JSON format
+4. update Jira parser for removing unnecessary fields

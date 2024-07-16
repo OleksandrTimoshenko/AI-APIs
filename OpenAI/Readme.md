@@ -12,10 +12,12 @@
 8. Add information to the `.env.example` file and rename it to `.env`.
 
 ### Setup code
-1. Create a `trainingData` folder and add files with context to this folder. [Supported files](https://platform.openai.com/docs/assistants/tools/file-search/supported-files).
-2. Install `python3` and the `openai` library.
+1. Use code in folder `AI_integrations` for add content for model learning from Confluence and Jira
+2. Install libraries from `requirements.txt`
 3. Create your assistant using `python ./OpenAI/assistants/create_assistant.py`. This will return an `assistant ID` and `Vector store ID` assigned to assistant.
 4. Add (or update) assistant content using `python ./OpenAI/assistants/update_content.py <Vector store ID>`.
+5. Delete assistant and all resources not used in another assistants: `python ./OpenAI/assistants/delete_assistant.py <assistant ID>`
+6. Delete all files from OpenAI (if you download it manually): `python ./OpenAI/assistants/delete_all_files.py`
 #### Legacy
 1. Add (or update) your context using `python ./OpenAI/assistants_legacy/update_context.py <assistant ID>`.
 2. Create a new thread (if required) using `python ./OpenAI//assistants_legacy/create_thread.py`.
