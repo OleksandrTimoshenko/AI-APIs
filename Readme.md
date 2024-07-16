@@ -34,6 +34,5 @@
 ```
 ## TODO:
 1. create data flow diagram
-2. add requirements.txt to all project parts
-3. create instruction for assistant for work with Jira JSON format
-4. update Jira parser for removing unnecessary fields
+2. create instruction for assistant for work with Jira JSON format
+3. update Jira parser for removing unnecessary fields
