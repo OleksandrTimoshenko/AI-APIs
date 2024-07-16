@@ -1,8 +1,8 @@
 from openai import OpenAI
 import os, sys
 from dotenv import load_dotenv
-from vector_store_handlers import delete_vector_store_file, upload_vector_store_file
-from work_with_json_handlers import *
+from handlers.openai_api_handlers import delete_vector_store_file, upload_vector_store_file
+from handlers.work_with_json_handlers import *
 
 '''
 Hints about logic
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         vector_store_id = input("Enter your vector_store_id: ")
   else:
         vector_store_id = sys.argv[1]
-  file_path = "assistants.json"
+  file_path = os.getenv("ASSISTANTS_FILE")
   updated_files = get_all_files("./trainingData")
   get_assistants_using_vector_store(vector_store_id, file_path)
   files_in_vector_store = get_files_from_vector_store(vector_store_id, file_path)
