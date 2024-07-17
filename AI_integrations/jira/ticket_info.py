@@ -5,6 +5,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def remove_null_fields(data):
+    """Recursively removes fields with null values from a JSON-like dictionary."""
+
+    if isinstance(data, dict):
+        return {k: remove_null_fields(v) for k, v in data.items() if v is not None}
+    elif isinstance(data, list):
+        return [remove_null_fields(item) for item in data if item is not None]
+    else:
+        return data
+
 def get_jira_ticket(ISSUE_ID, folder):
     ISSUE_URL = os.getenv("JIRA_URL") + f"/rest/api/2/issue/{ISSUE_ID}"
 
@@ -17,18 +27,20 @@ def get_jira_ticket(ISSUE_ID, folder):
     # Make the API request
     response = requests.get(ISSUE_URL, headers=headers)
 
+    filename = "jira_" + ISSUE_ID + '.json'
     # Check for a successful response
     if response.status_code == 200:
         issue = response.json()
-        with open("jira_" + ISSUE_ID + '.json', 'w') as json_file:
-            json.dump(issue, json_file, indent=4)
+        cleaned_data = remove_null_fields(issue)
+        with open(filename, 'w') as json_file:
+            json.dump(cleaned_data, json_file, indent=4)
         os.system(f"mv jira_{ISSUE_ID}.json {folder}")
 
     else:
-        print(f"Failed to fetch issue: {response.status_code} - {response.text}")
+        print(f"Failed to fetch {filename}: {response.status_code} - {response.text}")
 
 if __name__ == "__main__":
-    get_jira_ticket("jira_ZERAPP-1374", "./trainingData/jira")
+    get_jira_ticket("ZERAPP-1374", "./trainingData/jira")
 
 
 '''

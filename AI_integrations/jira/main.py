@@ -21,18 +21,15 @@ def get_tickets_list():
         "Authorization": "Bearer " + os.getenv('BEARER_TOKEN')
     }
 
-    # TODO: move 'maxResults' to .env variables
     # Request parameters
     params = {
         "jql": JQL,
-        "maxResults": 2000,  # Adjust the number of results as needed
+        "maxResults": int(os.getenv("MAX_RESULTS")),  # Adjust the number of results as needed
         "fields": "key,status,updated"  # Specify the fields you want to retrieve
     }
 
     # Make the API request
     response = requests.get(SEARCH_URL, headers=headers, params=params)
-
-    #print(response.json())
 
     # Check for a successful response
     if response.status_code == 200:
@@ -64,4 +61,4 @@ if __name__ == "__main__":
     all_tickets = get_tickets_list()
     updated_tickets = get_updated_tickets(all_tickets)
     for ticket in updated_tickets:
-        get_jira_ticket(ticket, folder)
+        filename = get_jira_ticket(ticket, folder)
