@@ -32,7 +32,9 @@
         ├── confluence_SPACE-docx-name.json
         ...
 ```
+
+![Data flow structure](./images/OpenAI_assistant_data_flow.png)
+
 ## TODO:
-1. create data flow diagram
-2. create instruction for assistant for work with Jira JSON format
-3. update Jira parser for removing unnecessary fields
+1. create instruction for assistant for work with Jira JSON format
+2. Update Jira structure?
