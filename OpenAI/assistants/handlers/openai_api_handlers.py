@@ -45,6 +45,16 @@ def create_assistant(client, assistant_name, assistant_instruction, model):
     tools=[{"type": "file_search"}])
   return assistant
 
+def update_assistant(client, assistant_id, assistant_name, assistant_instruction, model):
+    updated_assistant = client.beta.assistants.update(
+        assistant_id,
+        instructions=assistant_instruction,
+        name=assistant_name,
+        tools=[{"type": "file_search"}],
+        model=model
+    )
+    return updated_assistant
+
 def create_vector_store(client, name):
     vector_store = client.beta.vector_stores.create(name=name)
     print(f"Vector store: {vector_store.id}")
