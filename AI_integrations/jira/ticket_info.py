@@ -15,6 +15,97 @@ def remove_null_fields(data):
     else:
         return data
 
+def get_important_fields(issue):
+    issue_data = {}
+
+    # Extract fields with error handling
+    try:
+        issue_data['Issue Key'] = issue['key']
+    except KeyError:
+        issue_data['Issue Key'] = None
+
+    try:
+        issue_data['Summary'] = issue['fields']['summary']
+    except KeyError:
+        issue_data['Summary'] = None
+
+    try:
+        issue_data['Description'] = issue['fields']['description']
+    except KeyError:
+        issue_data['Description'] = None
+
+    try:
+        issue_data['Issue Type'] = issue['fields']['issuetype']['name']
+    except KeyError:
+        issue_data['Issue Type'] = None
+
+    try:
+        issue_data['Priority'] = issue['fields']['priority']['name']
+    except KeyError:
+        issue_data['Priority'] = None
+
+    try:
+        issue_data['Status'] = issue['fields']['status']['name']
+    except KeyError:
+        issue_data['Status'] = None
+
+    try:
+        issue_data['Assignee'] = issue['fields']['assignee']['displayName']
+    except KeyError:
+        issue_data['Assignee'] = None
+
+    try:
+        issue_data['Reporter'] = issue['fields']['reporter']['displayName']
+    except KeyError:
+        issue_data['Reporter'] = None
+
+    try:
+        issue_data['Created'] = issue['fields']['created']
+    except KeyError:
+        issue_data['Created'] = None
+
+    try:
+        issue_data['Updated'] = issue['fields']['updated']
+    except KeyError:
+        issue_data['Updated'] = None
+
+    try:
+        issue_data['Labels'] = issue['fields']['labels']
+    except KeyError:
+        issue_data['Labels'] = None
+
+    try:
+        issue_data['Timetracking'] = issue['fields']['timetracking']
+    except KeyError:
+        issue_data['Timetracking'] = None
+
+    try:
+        issue_data['Issue Links'] = issue['fields']['issuelinks']
+    except KeyError:
+        issue_data['Issue Links'] = None
+
+    try:
+        issue_data['Fix versions'] = issue['fields']['fixVersions']
+    except KeyError:
+        issue_data['Fix versions'] = None
+
+    # Extract comments with author name and body
+    try:
+        comments = issue['fields']['comment']['comments']
+        issue_data['Issue Comments'] = [
+            {'Author': comment['author']['name'], 'Body': comment['body']}
+            for comment in comments
+        ]
+    except KeyError:
+        issue_data['Issue Comments'] = None
+
+    #TODO: think about attachments
+
+    filtered_issue_data = {k: v for k, v in issue_data.items() if v not in (None, [], {}, '', 'null')}
+
+    # Convert the dictionary to a JSON object
+    return filtered_issue_data
+
 def get_jira_ticket(ISSUE_ID, folder):
     ISSUE_URL = os.getenv("JIRA_URL") + f"/rest/api/2/issue/{ISSUE_ID}"
 
@@ -32,51 +123,13 @@ def get_jira_ticket(ISSUE_ID, folder):
     if response.status_code == 200:
         issue = response.json()
         cleaned_data = remove_null_fields(issue)
+        importatn_data = get_important_fields(cleaned_data)
         with open(filename, 'w') as json_file:
-            json.dump(cleaned_data, json_file, indent=4)
+            json.dump(importatn_data, json_file, indent=4)
         os.system(f"mv jira_{ISSUE_ID}.json {folder}")
 
     else:
         print(f"Failed to fetch {filename}: {response.status_code} - {response.text}")
 
 if __name__ == "__main__":
-    get_jira_ticket("ZERAPP-1374", "./trainingData/jira")
-
-
-'''
-
-with open(ISSUE_ID + '.json', 'r') as json_file:
-    issue = json.load(json_file)
-
-# Extract important fields
-issue_key = issue['key']
-summary = issue['fields']['summary']
-description = issue['fields']['description']
-issue_type = issue['fields']['issuetype']['name']
-priority = issue['fields']['priority']['name']
-status = issue['fields']['status']['name']
-assignee = issue['fields']['assignee']['displayName']
-reporter = issue['fields']['reporter']['displayName']
-created = issue['fields']['created']
-updated = issue['fields']['updated']
-resolution = issue['fields']['resolution']
-labels = issue['fields']['labels']
-timetracking = issue['fields']['timetracking']
-issuelinks = issue['fields']['issuelinks']
-
-# Print extracted fields
-print(f"Issue Key: {issue_key}")
-print(f"Summary: {summary}")
-print(f"Description: {description}")
-print(f"Issue Type: {issue_type}")
-print(f"Priority: {priority}")
-print(f"Status: {status}")
-print(f"Assignee: {assignee}")
-print(f"Reporter: {reporter}")
-print(f"Created: {created}")
-print(f"Updated: {updated}")
-print(f"Resolution: {resolution}")
-print(f"Labels: {labels}")
-print(f"Timetracking: {timetracking}")
-print(f"Issue Links: {issuelinks}")
-'''
+    get_jira_ticket("AIGILE-36", "./trainingData/jira")
