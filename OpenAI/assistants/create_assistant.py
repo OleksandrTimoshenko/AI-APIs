@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from handlers.work_with_json_handlers import update_assistants_json
 from handlers.openai_api_handlers import create_assistant, create_vector_store, add_vector_store_to_assistant
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../.env")
 
 PROJECT_NAME =  os.getenv("PROJECT_NAME")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")

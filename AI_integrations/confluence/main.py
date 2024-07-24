@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from download_conf_page import get_page
 from get_page_last_update_time import get_page_history
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../../OpenAI/.env")
 
 def get_pages_in_space(space):
     # Define the endpoint you want to access, for example, getting the current user

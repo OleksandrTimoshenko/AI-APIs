@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 import pytz
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../../OpenAI/.env")
 
 def work_with_datetime_object_with_timezone(date_str):
     # Convert string to datetime object with timezone

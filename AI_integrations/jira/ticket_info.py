@@ -3,7 +3,7 @@ import json
 import os, re
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../../OpenAI/.env")
 
 def remove_null_fields(data):
     """Recursively removes fields with null values from a JSON-like dictionary."""

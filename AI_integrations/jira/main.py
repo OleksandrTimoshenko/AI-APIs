@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from ticket_info import get_jira_ticket
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../../OpenAI/.env")
 
 def get_tickets_list():
     # JQL query to fetch issues assigned to the specified user in the project

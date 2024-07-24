@@ -9,7 +9,6 @@
 5. Create a new [API key](https://platform.openai.com/api-keys) for your project.
 6. You can find information about limits and also set a monthly budget and notifications [here](https://platform.openai.com/settings/organization/limits).
 7. Information about usage is available [here](https://platform.openai.com/usage).
-8. Add information to the `.env.example` file and rename it to `.env`.
 
 ### Setup code
 1. Use code in folder `AI_integrations` for add content for model learning from Confluence and Jira

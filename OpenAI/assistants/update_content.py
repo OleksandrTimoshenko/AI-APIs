@@ -50,3 +50,4 @@ if __name__ == "__main__":
       # add new file to vector store
       new_file_id = upload_vector_store_file(client, vector_store_id, file)
       add_vector_store_file_to_json(vector_store_id, filename, new_file_id, file_path)
+      os.system(f"rm -rf {file}")

@@ -3,7 +3,7 @@ import os
 from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../../OpenAI/.env")
 
 def get_page(base_url, username, password, page_id, page_title, folder):
 

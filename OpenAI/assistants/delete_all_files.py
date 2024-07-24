@@ -1,9 +1,8 @@
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(os.path.dirname(os.path.abspath(__file__)) + "/../.env")
 
-PROJECT_NAME =  os.getenv("PROJECT_NAME")
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
