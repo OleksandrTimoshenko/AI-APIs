@@ -1,6 +1,6 @@
 import requests
 import json
-import os
+import os, re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -38,6 +38,15 @@ def get_important_fields(issue):
         issue_data['Issue Type'] = issue['fields']['issuetype']['name']
     except KeyError:
         issue_data['Issue Type'] = None
+
+    try:
+        #issue_data['Sprint'] = issue['fields']['customfield_10600']
+        sprint = issue['fields']['customfield_10600']
+        match = re.search(r"name=([^,]+)", sprint[0])
+        if match:
+            issue_data['Sprint'] = match.group(1)
+    except KeyError:
+        issue_data['Sprint'] = None
 
     try:
         issue_data['Priority'] = issue['fields']['priority']['name']
@@ -113,7 +122,7 @@ def get_jira_ticket(ISSUE_ID, folder):
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + os.getenv("BEARER_TOKEN")
+        "Authorization": "Bearer " + os.getenv("JIRA_BEARER_TOKEN")
     }
     # Make the API request
     response = requests.get(ISSUE_URL, headers=headers)

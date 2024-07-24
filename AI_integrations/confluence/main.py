@@ -35,14 +35,14 @@ def get_pages_in_space(space):
 def page_was_updated(updated_date):
     current_date = datetime.now(updated_date.tzinfo)
     difference = current_date - updated_date
-    return difference <= timedelta(days=int(os.getenv("UPDATING_PERIOD_IN_DAYS")))
+    return difference <= timedelta(days=int(os.getenv("CONFLUENCE_UPDATING_PERIOD_IN_DAYS")))
 
 if __name__ == "__main__":
     # Replace with your Confluence base URL, username, and password
     base_url = os.getenv("CONFLUENCE_BASE_URL")
     username = os.getenv("CONFLUENCE_USERNAME")
     password = os.getenv("CONFLUENCE_PASSWORD")
-    confluence_pages_dict = get_pages_in_space(os.getenv("PROJECT_KEY"))
+    confluence_pages_dict = get_pages_in_space(os.getenv("CONFLUENCE_PROJECT_KEY"))
     folder = "./trainingData/confluence/"
     if not os.path.exists(folder):
         os.makedirs(folder)

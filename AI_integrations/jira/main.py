@@ -9,7 +9,7 @@ load_dotenv()
 def get_tickets_list():
     # JQL query to fetch issues assigned to the specified user in the project
     # see more about JQL - https://support.atlassian.com/jira-service-management-cloud/docs/what-is-advanced-search-in-jira-cloud/
-    JQL = "project = " + os.getenv("PROJECT_KEY") + " " + os.getenv("JQL_QUERY")
+    JQL = "project = " + os.getenv("JIRA_PROJECT_KEY") + " " + os.getenv("JQL_QUERY")
 
     # Jira API endpoint for searching issues
     SEARCH_URL = os.getenv("JIRA_URL") + "/rest/api/2/search"
@@ -18,13 +18,13 @@ def get_tickets_list():
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + os.getenv('BEARER_TOKEN')
+        "Authorization": "Bearer " + os.getenv('JIRA_BEARER_TOKEN')
     }
 
     # Request parameters
     params = {
         "jql": JQL,
-        "maxResults": int(os.getenv("MAX_RESULTS")),  # Adjust the number of results as needed
+        "maxResults": int(os.getenv("JIRA_MAX_RESULTS")),  # Adjust the number of results as needed
         "fields": "key,status,updated"  # Specify the fields you want to retrieve
     }
 
@@ -44,7 +44,7 @@ def get_tickets_list():
 def ticket_was_updated(updated_date):
     current_date = datetime.now(updated_date.tzinfo)
     difference = current_date - updated_date
-    return difference <= timedelta(days=int(os.getenv("UPDATING_PERIOD_IN_DAYS")))
+    return difference <= timedelta(days=int(os.getenv("JIRA_UPDATING_PERIOD_IN_DAYS")))
 
 def get_updated_tickets(jira_tickets_dict):
     updated_tickets = []
