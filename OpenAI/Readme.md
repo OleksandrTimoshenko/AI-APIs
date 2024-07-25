@@ -15,8 +15,31 @@
 2. Install libraries from `requirements.txt`
 3. Create your assistant using `python ./OpenAI/assistants/create_assistant.py`. This will return an `assistant ID` and `Vector store ID` assigned to assistant.
 4. Add (or update) assistant content using `python ./OpenAI/assistants/update_content.py <Vector store ID>`.
-5. Delete assistant and all resources not used in another assistants: `python ./OpenAI/assistants/delete_assistant.py <assistant ID>`
-6. Delete all files from OpenAI (if you download it manually): `python ./OpenAI/assistants/delete_all_files.py`
+5. Update assistant `python ./OpenAI/assistants/update_assistant.py <assistant ID>`
+6. Delete assistant and all resources not used in another assistants: `python ./OpenAI/assistants/delete_assistant.py <assistant ID>`
+7. Delete all files from OpenAI (if you download it manually): `python ./OpenAI/assistants/delete_all_files.py`
+
+### Run in docker
+#### Start docker container
+1. create .env file `./OpenAI/.env`
+2. `docker build -t ai ./`
+3. `docker run -it -v ./:/AI ai bash`
+
+#### Create assistant
+`python ./OpenAI/assistants/create_assistant.py`
+
+#### Update assistant
+`python ./OpenAI/assistants/update_assistant.py <assistant_id>`
+
+#### Update knowladge base
+`python ./AI_integrations/jira/main.py`
+`python ./AI_integrations/confluence/main.py`
+`python ./OpenAI/assistants/update_content.py <vector_store_id>`
+
+#### Delete assistant (and all unused anymore vector stores and files)
+python ./OpenAI/assistants/delete_assistant.py <assistant_id>
+
+
 #### Legacy
 1. Add (or update) your context using `python ./OpenAI/assistants_legacy/update_context.py <assistant ID>`.
 2. Create a new thread (if required) using `python ./OpenAI//assistants_legacy/create_thread.py`.
