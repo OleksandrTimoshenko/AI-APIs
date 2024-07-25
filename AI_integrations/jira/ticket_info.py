@@ -20,6 +20,11 @@ def get_important_fields(issue):
 
     # Extract fields with error handling
     try:
+        issue_data['Project'] = issue['fields']['project']['name']
+    except:
+        issue_data['Project'] = None
+
+    try:
         issue_data['Issue Key'] = issue['key']
     except KeyError:
         issue_data['Issue Key'] = None
@@ -40,13 +45,9 @@ def get_important_fields(issue):
         issue_data['Issue Type'] = None
 
     try:
-        #issue_data['Sprint'] = issue['fields']['customfield_10600']
-        sprint = issue['fields']['customfield_10600']
-        match = re.search(r"name=([^,]+)", sprint[0])
-        if match:
-            issue_data['Sprint'] = match.group(1)
+        issue_data['Status'] = issue['fields']['status']['name']
     except KeyError:
-        issue_data['Sprint'] = None
+        issue_data['Status'] = None
 
     try:
         issue_data['Priority'] = issue['fields']['priority']['name']
@@ -54,9 +55,14 @@ def get_important_fields(issue):
         issue_data['Priority'] = None
 
     try:
-        issue_data['Status'] = issue['fields']['status']['name']
+        issue_data['Resolution'] = issue['fields']['resolution']
     except KeyError:
-        issue_data['Status'] = None
+        issue_data['Resolution']  = None
+
+    try:
+        issue_data['Resolution date'] = issue['fields']['resolutiondate']
+    except KeyError:
+        issue_data['Resolution date'] = None
 
     try:
         issue_data['Assignee'] = issue['fields']['assignee']['displayName']
@@ -69,24 +75,59 @@ def get_important_fields(issue):
         issue_data['Reporter'] = None
 
     try:
+        issue_data['Creator'] = issue['fields']['creator']['name']
+    except KeyError:
+        issue_data['Creator'] = None
+
+    try:
         issue_data['Created'] = issue['fields']['created']
     except KeyError:
         issue_data['Created'] = None
 
     try:
-        issue_data['Updated'] = issue['fields']['updated']
+        issue_data['Updated'] = issue['fields']['created']
     except KeyError:
         issue_data['Updated'] = None
 
     try:
-        issue_data['Labels'] = issue['fields']['labels']
+        issue_data["Last viewed"] = issue['fields']['lastViewed']
     except KeyError:
-        issue_data['Labels'] = None
+        issue_data["Last viewed"] = None
+
+    try:
+        issue_data["Votes"] = issue['fields']['votes']['votes']
+    except KeyError:
+        issue_data["Votes"] = None
+
+    try:
+        issue_data["Watchers"] = issue['fields']['watches']['watchCount']
+    except KeyError:
+        issue_data["Watchers"] = None
+
+    try:
+        issue_data["Attachments"] = issue['fields']['attachment']
+    except KeyError:
+        issue_data["Attachments"] = None
 
     try:
         issue_data['Timetracking'] = issue['fields']['timetracking']
     except KeyError:
         issue_data['Timetracking'] = None
+
+    try:
+        issue_data["Timeestimate"] = issue['fields']['timeestimate']
+    except KeyError:
+        issue_data["Timeestimate"] = None
+
+    try:
+        issue_data["Timespent"] = issue['fields']['timespent']
+    except KeyError:
+        issue_data["Timespent"] = None
+
+    try:
+        issue_data['Labels'] = issue['fields']['labels']
+    except KeyError:
+        issue_data['Labels'] = None
 
     try:
         issue_data['Issue Links'] = issue['fields']['issuelinks']
@@ -108,7 +149,14 @@ def get_important_fields(issue):
     except KeyError:
         issue_data['Issue Comments'] = None
 
-    #TODO: think about attachments
+    try:
+        #issue_data['Sprint'] = issue['fields']['customfield_10600']
+        sprint = issue['fields']['customfield_10600']
+        match = re.search(r"name=([^,]+)", sprint[0])
+        if match:
+            issue_data['Sprint'] = match.group(1)
+    except KeyError:
+        issue_data['Sprint'] = None
 
     filtered_issue_data = {k: v for k, v in issue_data.items() if v not in (None, [], {}, '', 'null')}
 
@@ -118,14 +166,48 @@ def get_important_fields(issue):
 def get_jira_ticket(ISSUE_ID, folder):
     ISSUE_URL = os.getenv("JIRA_URL") + f"/rest/api/2/issue/{ISSUE_ID}"
 
+    # List of fields to retrieve
+    fields = [
+        "project", 
+        "key", 
+        "summary", 
+        "description",
+        "issuetype", 
+        "status", 
+        "priority", 
+        "resolution",
+        "resolutiondate",
+        "assignee", 
+        "reporter", 
+        "creator", 
+        "created", 
+        "updated", 
+        "lastViewed", 
+        "votes", 
+        "watches", 
+        "attachment", 
+        "timetracking",
+        "timeestimate", 
+        "timespent", 
+        "labels",
+        "issuelinks", 
+        "fixVersions", 
+        "comment", 
+        "customfield_10600" # sprint name
+    ]
+
     # Request headers
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "Authorization": "Bearer " + os.getenv("JIRA_BEARER_TOKEN")
     }
+    params = {
+        "fields": ",".join(fields)  # Specify the fields to retrieve
+    }
+
     # Make the API request
-    response = requests.get(ISSUE_URL, headers=headers)
+    response = requests.get(ISSUE_URL, headers=headers, params=params)
 
     filename = "jira_" + ISSUE_ID + '.json'
     # Check for a successful response
