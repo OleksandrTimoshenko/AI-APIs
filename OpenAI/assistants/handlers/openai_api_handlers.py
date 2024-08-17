@@ -1,3 +1,11 @@
+"""
+You can attach a maximum of 20 files to code_interpreter and 10,000 files to file_search (using vector_store objects).
+Each file can be at most 512 MB in size and have a maximum of 5,000,000 tokens.
+By default, the size of all the files uploaded by your organization cannot exceed 100 GB,
+but you can reach out to our support team to increase this limit.
+"""
+
+
 def list_all_vector_stores(client):
     vector_stores_ids = []
     vector_stores = client.beta.vector_stores.list()
@@ -42,7 +50,7 @@ def create_assistant(client, assistant_name, assistant_instruction, model):
     name=assistant_name,
     instructions=assistant_instruction,
     model=model,
-    tools=[{"type": "file_search"}])
+    tools=[{"type": "file_search"}]) # , {"type": "code_interpreter"}])
   return assistant
 
 def update_assistant(client, assistant_id, assistant_name, assistant_instruction, model):
