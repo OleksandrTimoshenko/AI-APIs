@@ -1,5 +1,3 @@
-# https://confluence.ontrq.com/pages/viewpreviousversions.action?pageId=508920206
-
 import requests
 import os
 from requests.auth import HTTPBasicAuth

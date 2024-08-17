@@ -1,54 +1,58 @@
-# Work with OpenAI API
+# Working with the OpenAI API
+
 ## Assistants
 
-### Setup OpenAI account
+### Setting Up an OpenAI Account
+
 1. Create your account on [OpenAI](https://platform.openai.com/playground/).
 2. Go to the [billing section](https://platform.openai.com/settings/organization/billing/overview) and add a payment method (the API won't work without it).
-3. You will need to pay a minimum of $5 to start (info valid as of 06.2024).
+3. You will need to pay a minimum of $5 to start (information valid as of 06.2024).
 4. Create a new project.
 5. Create a new [API key](https://platform.openai.com/api-keys) for your project.
-6. You can find information about limits and also set a monthly budget and notifications [here](https://platform.openai.com/settings/organization/limits).
+6. You can find information about limits and set a monthly budget and notifications [here](https://platform.openai.com/settings/organization/limits).
 7. Information about usage is available [here](https://platform.openai.com/usage).
 
-### Setup code
-1. Use code in folder `AI_integrations` for add content for model learning from Confluence and Jira
-2. Install libraries from `requirements.txt`
-3. Create your assistant using `python ./OpenAI/assistants/create_assistant.py`. This will return an `assistant ID` and `Vector store ID` assigned to assistant.
-4. Add (or update) assistant content using `python ./OpenAI/assistants/update_content.py <Vector store ID>`.
-5. Update assistant `python ./OpenAI/assistants/update_assistant.py <assistant ID>`
-6. Delete assistant and all resources not used in another assistants: `python ./OpenAI/assistants/delete_assistant.py <assistant ID>`
-7. Delete all files from OpenAI (if you download it manually): `python ./OpenAI/assistants/delete_all_files.py`
+### Setting Up the Code
 
-### Run in docker
-#### Start docker container
-1. create .env file `./OpenAI/.env`
-2. `docker build -t ai ./`
-3. `docker run -it -v ./:/AI ai bash`
+1. Use the code in the `AI_integrations` folder to add content for model learning from Confluence and Jira.
+2. Install libraries from `requirements.txt`.
+3. Update the configuration in [.env.example](./.env.example) and run `cp ./.env.example ./.env`.
+4. Create your assistant using `python ./OpenAI/assistants/create_assistant.py`. This will return an `Assistant ID` and `Vector Store ID` assigned to the assistant.
+5. Add (or update) assistant content using `python ./OpenAI/assistants/update_content.py <Vector Store ID>`.
+6. Update the assistant using `python ./OpenAI/assistants/update_assistant.py <Assistant ID>`.
+7. Delete the assistant and all resources not used by other assistants: `python ./OpenAI/assistants/delete_assistant.py <Assistant ID>`.
+8. Delete all files from OpenAI (if you downloaded them manually): `python ./OpenAI/assistants/delete_all_files.py`.
 
-#### Create assistant
+#### Create Assistant
+
 `python ./OpenAI/assistants/create_assistant.py`
 
-#### Update assistant
-`python ./OpenAI/assistants/update_assistant.py <assistant_id>`
+#### Update Assistant
 
-#### Update knowladge base
-`python ./AI_integrations/jira/main.py`
-`python ./AI_integrations/confluence/main.py`
-`python ./OpenAI/assistants/update_content.py <vector_store_id>`
+`python ./OpenAI/assistants/update_assistant.py <Assistant ID>`
 
-#### Delete assistant (and all unused anymore vector stores and files)
-python ./OpenAI/assistants/delete_assistant.py <assistant_id>
+#### Update Knowledge Base
 
+`python ./AI_integrations/jira/main.py`  
+`python ./AI_integrations/confluence/main.py`  
+`python ./OpenAI/assistants/update_content.py <Vector Store ID>`
 
-#### Legacy
-1. Add (or update) your context using `python ./OpenAI/assistants_legacy/update_context.py <assistant ID>`.
-2. Create a new thread (if required) using `python ./OpenAI//assistants_legacy/create_thread.py`.
-3. Ask a question to the assistant using `python ./OpenAI//assistants_legacy/create_new_thread_with_existing_assistant.py <assistant ID> <thread_ID>`.
-4. You can list your existing assistants using `python ./OpenAI//assistants_legacy/list.py`.
+#### Delete Assistant (and all unused vector stores and files)
 
-### Add integrations
+`python ./OpenAI/assistants/delete_assistant.py <Assistant ID>`
+
+### Legacy
+
+1. Add (or update) your context using `python ./OpenAI/assistants_legacy/update_context.py <Assistant ID>`.
+2. Create a new thread (if required) using `python ./OpenAI/assistants_legacy/create_thread.py`.
+3. Ask a question to the assistant using `python ./OpenAI/assistants_legacy/create_new_thread_with_existing_assistant.py <Assistant ID> <Thread ID>`.
+4. List your existing assistants using `python ./OpenAI/assistants_legacy/list.py`.
+
+### Adding Integrations
+
 #### Slack
-I tested integration with Zapier, instructions [here](https://www.youtube.com/watch?v=kLkMC-ZIXq4).
+
+I tested the integration with Zapier. Instructions can be found [here](https://www.youtube.com/watch?v=kLkMC-ZIXq4).  
 ![Slack integration](./pictures/Slack_integration.png)
-![Slack result](./pictures/Slack_result.png)
-Also, [PlugBear](https://plugbear.io/) can be used (not tested yet...).
+![Slack result](./pictures/Slack_result.png)  
+You can also use [PlugBear](https://plugbear.io/) (not tested yet).

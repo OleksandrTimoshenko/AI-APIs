@@ -1,26 +1,49 @@
-# This repository contains examples of working with different AI tools
-## The main point is to check how we can upload our own files to an API for updating the AI knowledge base.
-## OpenAI 
-Update info in [.env.example](./OpenAI/.env.example) and `cp ./OpenAI/.env.example ./OpenAI/.env`  
-[OpenAI readme](./OpenAI/Readme.md)
+# AI Tool Examples Repository
 
-## Google Gemini  
-[Gemini readme](./Gemini/Readme.md)
+This repository contains examples of working with different AI tools.
 
-## Integrations
-### Jira (In progress)
-1. Create your own Jira API token [here](https://jira.ontrq.com/secure/ViewProfile.jspa?selectedTab=com.atlassian.pats.pats-plugin:jira-user-personal-access-tokens)
-2. run `python ./AI_integrations/jira/main.py`
+## Overview
+The primary goal is to demonstrate how to upload our own files to an API for updating an AI knowledge base.
 
-### Confluence (In progress)
-1. run `python ./AI_integrations/confluence/main.py`
+# OpenAI
+### Running in Docker (only for OpenAI)
 
-## Project structure
+#### Start Docker Container
+
+1. Create a `.env` file at `cp ./OpenAI/.env.example ./OpenAI/.env`
+2. Build the Docker image: `docker build -t ai ./`.
+3. Run the Docker container: `docker run -it -v ./:/AI ai bash`.  
+
+Refer to the [OpenAI README](./OpenAI/Readme.md) for detailed instructions.
+
+## Integrations (only for OpenAI)
+
+`Here we have code for updating OpenAI assistant knowladge base from:`
+
+### Jira
+1. Create your own Jira API token.
+2. Set Jira credentials in `./OpenAI/.env`.
+3. Run `python ./AI_integrations/jira/main.py`.
+
+### Confluence
+1. Set Confluence credentials in `./OpenAI/.env`.
+2. Run `python ./AI_integrations/confluence/main.py`.
+
+## Data flow structure
+`Jenkins is used on the diagram as an example of how to realize automatic deployment and updating of assistants.`  
+`So far, within the framework of this project Jenkins setup is not planned..`
+![Data flow structure](./images/OpenAI_assistant_data_flow.png)
+
+# Google Gemini (just a cursory glance)
+Refer to the [Gemini README](./Gemini/Readme.md) for more information.
+
+## Project Structure
 ```
 ├── AI_integrations
 │   ├── confluence
 │   └── jira
 ├── Gemini
+│   └── .env
 ├── OpenAI
 │   └── .env
 ├── Readme.md
@@ -29,12 +52,6 @@ Update info in [.env.example](./OpenAI/.env.example) and `cp ./OpenAI/.env.examp
     │    ├── jira_SPACE-XXXX.json
     │    ...
     └── confluence
-        ├── confluence_SPACE-docx-name.json
+        ├── confluence_SPACE-docx-name.pdf
         ...
 ```
-
-![Data flow structure](./images/OpenAI_assistant_data_flow.png)
-
-## TODO:
-1. create instruction for assistant for work with Jira JSON format
-2. Update Jira structure?
